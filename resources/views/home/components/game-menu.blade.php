@@ -56,10 +56,10 @@
 </style>
 <div class="game-menu">
     <div class="title">
-        <h1 style="color: #9ca3af;">
+        <h2 style="color: #52555d;">
             <strong>เลือก boss map</strong>
             <img src="https://forum.playragnarokonlinebr.com/uploads/emoticons/f4.gif" height="100">
-        </h1>
+        </h2>
     </div>
     <div class="border-bottom mb-3"></div>
     <div class="menu-list">
