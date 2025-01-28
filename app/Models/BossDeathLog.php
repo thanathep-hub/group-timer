@@ -22,6 +22,6 @@ class BossDeathLog extends Model
         'updated_at',
     ];
 
-    public $primaryKey = "log_id";
+    protected $primaryKey = "log_id";
     public $timestamps = false;
 }

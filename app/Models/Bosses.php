@@ -30,6 +30,6 @@ class Bosses extends Model
         'updated_at',
     ];
 
-    public $primaryKey = "boss_id";
+    protected $primaryKey = "boss_id";
     public $timestamps = false;
 }

@@ -48,7 +48,7 @@
             box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
         }
 
-        .btn-login {
+        .btn-register {
             background-color: #efc55f;
             border-color: #efc55f;
             height: 44px;
@@ -58,7 +58,7 @@
             box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
         }
 
-        .btn-login:hover {
+        .btn-register:hover {
             background-color: #eaae35;
             border-color: #eaae35;
             height: 44px;
@@ -82,12 +82,12 @@
             filter: drop-shadow(3px 5px 2px rgb(0 0 0 / 0.4));
         }
 
-        .btn-register {
+        .btn-login {
             width: fit-content;
             border-bottom: 4px solid transparent;
         }
 
-        .btn-register:hover {
+        .btn-login:hover {
             border-bottom: 4px solid #efc55f;
         }
     </style>
@@ -98,25 +98,80 @@
     <div class="card border-0 p-4">
         <div class="text-center mb-4">
             <img class="bot-img mb-2" src="/bg/float-top-dV3lMph1.png" alt="" height="100" />
-            <h2>เข้าสู่ระบบ</h2>
+            <h2>สมัครสมาชิก</h2>
         </div>
-        <form>
+        <div class="border-bottom mb-3"></div>
+        <form id="register-form">
+            @csrf
+            @method('POST')
             <div class="mb-3">
-                <input type="text" class="form-control" placeholder="ชื่อผู้ใช้งาน" required />
+                <input type="text" class="form-control" name="username" id="username" placeholder="ชื่อผู้ใช้งาน"
+                    required />
             </div>
             <div class="mb-3">
-                <input type="password" class="form-control" placeholder="รหัสผ่าน" required />
+                <input type="email" class="form-control" name="email" id="email" aria-describedby="emailHelp"
+                    placeholder="อีเมล" required />
             </div>
-            <a href="{{ route('auth.remember_password') }}"
-                class="d-block text-gray text-end mb-1 text-decoration-none">ลืมรหัสผ่าน?</a>
-            <button type="submit" class="btn btn-login w-100">เข้าสู่ระบบ</button>
+            <div class="mb-3">
+                <input type="password" name="password" id="password" class="form-control" placeholder="รหัสผ่าน"
+                    required />
+            </div>
+            <div class="border-bottom mb-3"></div>
+            <button type="button" onclick="register()" class="btn btn-register w-100">สมัครสมาชิก</button>
         </form>
         <div class="d-flex justify-content-center text-center mt-3 mb-3">
-            <a href="{{ route('auth.showRegister') }}"
-                class="btn-register text-black text-decoration-none">สมัครสมาชิก</a>
+            <a href="{{ route('auth.login') }}" class="btn-login text-black text-decoration-none">เข้าสู่ระบบ</a>
         </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        $(document).ready(function() {
+            console.log('ready');
+
+        });
+
+        function register() {
+            console.log('registering');
+            $.ajax({
+                type: "POST",
+                url: "{{ route('auth.register') }}",
+                data: {
+                    username: $('#username').val(),
+                    email: $('#email').val(),
+                    password: $('#password').val(),
+                    _token: "{{ csrf_token() }}"
+                },
+                success: function(response) {
+                    if (response.status === 200) {
+                        $('#register-form')[0].reset();
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'สำเร็จ',
+                            text: response.message,
+                            showConfirmButton: true,
+                            timer: 1500
+                        });
+
+                    }
+                },
+                error: function(xhr) {
+                    let errorMessage = "";
+                    $.each(xhr.responseJSON.errors, function(key, value) {
+                        errorMessage += value + "\n";
+                    });
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'เกิดข้อผิดพลาด',
+                        text: errorMessage,
+                    });
+                }
+            });
+        }
+    </script>
+
 </body>
 
 </html>

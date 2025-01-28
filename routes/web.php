@@ -6,7 +6,11 @@ use App\Http\Controllers\SetTimeController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\UserController;
 
-Route::get('/login', [UserController::class, 'showLogin']);
+Route::get('/auth/login', [UserController::class, 'showLogin'])->name('auth.login');
+
+Route::get('/auth/register', [UserController::class, 'showRegister'])->name('auth.showRegister');
+Route::post('/auth/register', [UserController::class, 'register'])->name('auth.register');
+Route::get('/auth/remember', [UserController::class, 'showRememberPassword'])->name('auth.remember_password');
 
 
 Route::get('/', [HomeController::class, 'index']);

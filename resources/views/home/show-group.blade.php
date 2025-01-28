@@ -151,11 +151,22 @@
                                                 <tbody></tbody>
                                                 <tr>
                                                     <td class="border-end">จำนวนสมาชิก</td>
-                                                    <td>{{ $item->max_members ? $item->max_members : '' }}</td>
+                                                    <td>
+                                                        @if ($item->max_members > 99)
+                                                            ไม่จำกัด
+                                                        @else
+                                                            {{ $item->max_members ? $item->max_members : '' }}
+                                                        @endif
+                                                    </td>
                                                 </tr>
                                                 <tr>
                                                     <td class="border-end">จำนวนบอส</td>
-                                                    <td>{{ $item->max_bosses ? $item->max_bosses : '' }}</td>
+                                                    <td>
+                                                        @if ($item->max_bosses > 99)
+                                                            ไม่จำกัด
+                                                        @else
+                                                            {{ $item->max_bosses ? $item->max_bosses : '' }}
+                                                        @endif
                                                 </tr>
                                                 <tr>
                                                     <td class="border-end">ระยะเวลา</td>

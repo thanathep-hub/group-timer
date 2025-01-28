@@ -20,6 +20,6 @@ class Package extends Model
         'max_bosses'
     ];
     protected $table = 'GroupTimer.packages';
-    public $primaryKey = "package_id";
+    protected $primaryKey = "package_id";
     public $timestamps = false;
 }

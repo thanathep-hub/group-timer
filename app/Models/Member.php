@@ -21,6 +21,11 @@ class Member extends Model
         'updated_at',
     ];
 
-    public $primaryKey = "member_id";
+    protected $primaryKey = "member_id";
     public $timestamps = false;
+
+    public function setPasswordHashAttribute($value)
+    {
+        $this->attributes['password_hash'] = bcrypt($value);
+    }
 }

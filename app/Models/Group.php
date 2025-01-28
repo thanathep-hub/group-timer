@@ -20,6 +20,6 @@ class Group extends Model
         'updated_at',
     ];
 
-    public $primaryKey = "group_id";
+    protected $primaryKey = "group_id";
     public $timestamps = false;
 }
