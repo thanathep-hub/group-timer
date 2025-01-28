@@ -9,10 +9,11 @@ class HomeController extends Controller
 {
     public function index()
     {
-        return view('home.home');
+        $boss = $this->boss();
+        return view('home.home', compact('boss'));
     }
 
-    public function apiBoss()
+    public function boss()
     {
 
         $boss = DB::select("
@@ -20,6 +21,7 @@ class HomeController extends Controller
                 bo.boss_id,
                 bo.boss_name,
                 bo.boss_time_cooldown,
+                bo.boss_pic,
                 bo.boss_revive,
                 bo.map_id,
                 map.map_name,
@@ -30,10 +32,6 @@ class HomeController extends Controller
             ORDER BY
                 bo.boss_id
         ");
-
-        // if(!$boss){
-        //     return response()->json([])
-        // }
-        return response()->json($boss);
+        return $boss;
     }
 }

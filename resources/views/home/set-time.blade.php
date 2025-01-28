@@ -105,7 +105,11 @@
                                     <h5>⚠️ หากไม่มีกลุ่ม กรูณาสร้างกลุ่มก่อน</h5>
                                 </div>
                                 <div class="add-group d-flex mb-3">
-                                    <button type="button" class="btn-add-group p-2">➕ สร้างกลุ่ม</button>
+                                    <a href="/show-group">
+                                        <button type="button" class="btn-add-group p-2">➕
+                                            สร้างกลุ่ม</button>
+                                    </a>
+
                                 </div>
 
                                 <div class="d-flex justify-content-center">

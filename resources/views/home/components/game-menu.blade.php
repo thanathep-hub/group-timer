@@ -57,98 +57,55 @@
 <div class="game-menu">
     <div class="title">
         <h2 style="color: #52555d;">
-            <strong>เลือก boss map</strong>
-            <img src="https://forum.playragnarokonlinebr.com/uploads/emoticons/f4.gif" height="100">
+            <strong>เลือกบอส map</strong>
+            <img class="p-0" src="https://forum.playragnarokonlinebr.com/uploads/emoticons/f4.gif" height="100">
         </h2>
     </div>
     <div class="border-bottom mb-3"></div>
     <div class="menu-list">
         <div class="row">
-            <div class="col-12 col-lg-4 mb-3">
-                <div class="card border-0 p-4 text-start align-items-center justify-content-center text-center">
-                    <img class="card-img-top" src="http://www.mvptimer.com/images/mvp/1511.gif" alt="Title"
-                        style="width:79px;max-height:100px;" />
-                    <div class="card-body p-0">
-                        <label class="card-title p-2 px-4 rounded mb-3 text-uppercase">Amon Ra</label>
-                        <div class="row justify-content-between mb-3">
-                            <div class="col-12 col-sm-8  p-0">
-                                <ul class="list-unstyled text-start">
-                                    <li> <strong>เวลาเกิด : </strong> <label class="gray-200">60 นาที</label></li>
-                                    <li> <strong>เวลาเกิดดีเลย์ : </strong> <label class="gray-200">10 นาที</label>
-                                    </li>
-                                    <li> <strong>map : </strong> <label class="gray-200">aek_op2367845</label></li>
-                                </ul>
-                            </div>
-                            <div class="col-12 col-sm-4 p-1">
-                                <img class="map-img shadow" src="http://www.mvptimer.com/images/map/moc_pryd06.gif">
+            @if ($boss)
+                @foreach ($boss as $item)
+                    <div class="col-12 col-lg-4 mb-3">
+                        <div class="card border-0 p-4 text-start align-items-center justify-content-center text-center">
+                            <img class="card-img-top" src="{{ $item->boss_pic }}" alt="Title"
+                                style="width:79px;max-height:100px;" />
+                            <div class="card-body p-0">
+                                <label
+                                    class="card-title p-2 px-4 rounded mb-3 text-uppercase">{{ $item->boss_name }}</label>
+                                <div class="row justify-content-between mb-3">
+                                    <div class="col-12 col-sm-8  p-0">
+                                        <ul class="list-unstyled text-start">
+                                            <li> <strong>เวลาเกิด : </strong> <label
+                                                    class="gray-200">{{ $item->boss_revive ? $item->boss_revive : '' }}
+                                                    นาที</label>
+                                            </li>
+                                            <li> <strong>เวลาเกิดดีเลย์ : </strong> <label
+                                                    class="gray-200">{{ $item->boss_time_cooldown ? $item->boss_time_cooldown : '' }}
+                                                    นาที</label>
+                                                นาที</label>
+                                            </li>
+                                            <li> <strong>map : </strong> <label
+                                                    class="gray-200">{{ $item->map_name ? $item->map_name : '' }}</label>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-12 col-sm-4 p-1">
+                                        <img class="map-img shadow" src="{{ $item->map_pic ? $item->map_pic : '' }}">
+                                    </div>
+                                </div>
+
+                                <div class="view-boss">
+                                    <button type="button" class="btn w-100 btn-link">เลือก boss</button>
+                                </div>
                             </div>
                         </div>
 
-                        <div class="view-boss">
-                            <button type="button" class="btn w-100 btn-link">เลือก boss</button>
-                        </div>
+
                     </div>
-                </div>
+                @endforeach
+            @endif
 
-
-            </div>
-
-            <div class="col-12 col-lg-4 mb-3">
-                <div class="card border-0 p-4 text-start align-items-center justify-content-center text-center">
-                    <img class="card-img-top" src="http://www.mvptimer.com/images/mvp/1511.gif" alt="Title"
-                        style="width:79px;max-height:100px;" />
-                    <div class="card-body p-0">
-                        <label class="card-title p-2 px-4 rounded mb-3 text-uppercase">Amon Ra</label>
-                        <div class="row justify-content-between mb-3">
-                            <div class="col-12 col-sm-8 p-0">
-                                <ul class="list-unstyled text-start">
-                                    <li> <strong>เวลาเกิด : </strong> <label class="gray-200">60 นาที</label></li>
-                                    <li> <strong>เวลาเกิดดีเลย์ : </strong> <label class="gray-200">10 นาที</label>
-                                    </li>
-                                    <li> <strong>map : </strong> <label class="gray-200">aek_op2367845</label></li>
-                                </ul>
-                            </div>
-                            <div class="col-12 col-sm-4 p-1">
-                                <img class="map-img shadow" src="http://www.mvptimer.com/images/map/moc_pryd06.gif">
-                            </div>
-                        </div>
-
-                        <div class="view-boss">
-                            <button type="button" class="btn w-100 btn-link">เลือก boss</button>
-                        </div>
-                    </div>
-                </div>
-
-
-            </div>
-            <div class="col-12 col-lg-4 mb-3">
-                <div class="card border-0 p-4 text-start align-items-center justify-content-center text-center">
-                    <img class="card-img-top" src="http://www.mvptimer.com/images/mvp/1511.gif" alt="Title"
-                        style="width:79px;max-height:100px;" />
-                    <div class="card-body p-0">
-                        <label class="card-title p-2 px-4 rounded mb-3 text-uppercase">Amon Ra</label>
-                        <div class="row justify-content-between mb-3 t-center">
-                            <div class="col-12 col-sm-8 p-0">
-                                <ul class="list-unstyled text-start">
-                                    <li> <strong>เวลาเกิด : </strong> <label class="gray-200">60 นาที</label></li>
-                                    <li> <strong>เวลาเกิดดีเลย์ : </strong> <label class="gray-200">10 นาที</label>
-                                    </li>
-                                    <li> <strong>map : </strong> <label class="gray-200">aek_op2367845</label></li>
-                                </ul>
-                            </div>
-                            <div class="col-12 col-sm-4 p-1">
-                                <img class="map-img shadow" src="http://www.mvptimer.com/images/map/moc_pryd06.gif">
-                            </div>
-                        </div>
-
-                        <div class="view-boss">
-                            <button type="button" class="btn w-100 btn-link">ดูข้อมูล 🔍</button>
-                        </div>
-                    </div>
-                </div>
-
-
-            </div>
         </div>
     </div>
 

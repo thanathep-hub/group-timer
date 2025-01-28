@@ -41,7 +41,7 @@
                     <a class="nav-link" href="/how-to-use">📖 วิธีใช้งาน</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">👨🏻‍💻 สมัครสมาชิก</a>
+                    <a class="nav-link" href="login">👨🏻‍💻 สมัครสมาชิก</a>
                 </li>
 
                 {{-- <li class="nav-item dropdown">
