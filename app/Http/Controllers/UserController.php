@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Member;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -14,7 +15,6 @@ class UserController extends Controller
     }
     public function register(Request $request)
     {
-
 
         $errors = $this->validateRegisterData($request);
 
@@ -43,14 +43,44 @@ class UserController extends Controller
 
     public function showLogin()
     {
+        if (session('member')) {
+            return redirect('/');
+        }
         return view('auth.login');
+    }
+
+    public function login(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'username' => 'required',
+            'password' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 400,
+                'message' => 'Validation failed',
+                'errors' => $validator->errors()
+            ], 400);
+        }
+
+        $member = Member::where('username', $request->username)->first();
+
+        if (!$member || !Hash::check($request->password, $member->password_hash)) {
+            return back()->with('error', 'ไม่พบข้อมูลผู้ใช้งาน หรือรหัสผ่านไม่ถูกต้อง');
+        }
+
+        session()->put('member', $member);
+        $previousUrl = session('previous_url' ?? '/');
+
+        return redirect()->to($previousUrl ?? '/');
     }
 
     public function logout()
     {
         session()->flush();
 
-        return redirect('/login');
+        return redirect()->route('login');
     }
 
     public function showRememberPassword()

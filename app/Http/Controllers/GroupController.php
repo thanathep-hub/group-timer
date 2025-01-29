@@ -6,9 +6,17 @@ use Illuminate\Http\Request;
 use App\Models\Package;
 use Illuminate\Support\Facades\Log;
 use App\Models\Group;
+use App\Models\Member;
+use Illuminate\Support\Facades\DB;
 
 class GroupController extends Controller
 {
+    protected $member;
+
+    public function __construct()
+    {
+        $this->member = session('member') ? Member::where('member_id', session('member')->member_id)->first() : null;
+    }
     public function showGroup()
     {
         $package = $this->fetchPackage();
@@ -24,38 +32,74 @@ class GroupController extends Controller
             'group_name' => 'required|string|max:255'
         ]);
 
-        $checkGroup = Group::where('group_name', $request->group_name)
-            ->first();
-
-        if ($checkGroup) {
+        // Ensure member exists
+        if (!$this->member) {
             return response()->json([
                 'status' => 'error',
+                'message' => 'ไม่พบข้อมูลสมาชิก'
+            ], 403);
+        }
+
+        // Check if group name already exists
+        if (Group::where('group_name', $request->group_name)->exists()) {
+            return response()->json([
+                'status' => 'warning',
                 'message' => 'มีชื่อกลุ่มนี้แล้ว ใช้ชื่ออื่น'
             ], 400);
         }
 
-        $createGroup =  Group::create([
-            'package_id' => $request->package_id,
-            'group_name' => $request->group_name,
-            'owner_id'  => '', // wait member id
-            'status' => 1
-        ]);
-
-        if (!$createGroup) {
+        // Fetch package details
+        $package = Package::find($request->package_id);
+        if (!$package) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'เกิดข้อผิดพลาด ไม่สามารถสร้างกลุ่มได้'
-            ], 500);
+                'message' => 'ไม่พบแพ็กเกจที่เลือก'
+            ], 400);
         }
 
-        return response()->json([
-            'message' => 'สร้างกลุ่มสำเร็จ',
-            'data' => [
-                'status' => 'success',
+        // Check coin balance
+        if ($this->member->coin_balance < $package->coin) {
+            return response()->json([
+                'status' => 'warning',
+                'message' => 'เหรียญไม่เพียงพอ'
+            ], 400);
+        }
+
+        DB::beginTransaction();
+        try {
+
+            $member = Member::where('member_id', $this->member->member_id)->lockForUpdate()->first();
+
+            // Create group
+            $group = Group::create([
                 'package_id' => $request->package_id,
-                'group_name' => $request->group_name
-            ]
-        ], 200);
+                'group_name' => $request->group_name,
+                'owner_id'  => $this->member->member_id ?? null,
+                'status' => 1
+            ]);
+
+            // Deduct coins
+            $member->update(['coin_balance' => $member->coin_balance - $package->coin]);
+
+            DB::commit();
+
+            return response()->json([
+                'message' => 'สร้างกลุ่มสำเร็จ',
+                'data' => [
+                    'status' => 'success',
+                    'group_id' => $group->group_id,
+                    'package_id' => $group->package_id,
+                    'group_name' => $group->group_name
+                ]
+            ], 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'status' => 'error',
+                'message' => 'เกิดข้อผิดพลาด ไม่สามารถสร้างกลุ่มได้',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 
     public function updateGroup(Request $request)

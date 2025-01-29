@@ -40,9 +40,16 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/how-to-use">📖 วิธีใช้งาน</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/auth/login">👨🏻‍💻 สมัครสมาชิก</a>
-                </li>
+
+                @if (session('member'))
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('logout') }}">🚪 ออกจากระบบ</a>
+                    </li>
+                @else
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('login') }}">🔑 เข้าสู่ระบบ</a>
+                    </li>
+                @endif
 
                 {{-- <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"

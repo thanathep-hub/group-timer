@@ -211,7 +211,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form>
+                        <form id="form-create-group">
                             @csrf
                             @method('POST')
                             <input type="text" name="package_id" id="package_id" hidden>
@@ -270,7 +270,7 @@
                     _token: "{{ csrf_token() }}"
                 },
                 success: function(response) {
-                    console.log(response); // ตรวจสอบข้อมูลที่ได้รับจาก server
+                    console.log(response);
 
                     if (response.status == 'error') {
                         Swal.fire({
@@ -290,11 +290,25 @@
                     }
                 },
                 error: function(xhr, status, error) {
-                    console.error("Error:", xhr.responseText);
+                    // console.error("Error:", xhr.responseText);
+
+                    let errorMessage = "เกิดข้อผิดพลาดในการส่งข้อมูล";
+                    let icon = 'error';
+                    try {
+                        let response = JSON.parse(xhr.responseText);
+                        if (response.message) {
+                            errorMessage = response.message;
+                            if (["success", "error", "warning", "info"].includes(response.status)) {
+                                icon = response.status;
+                            }
+                        }
+                    } catch (e) {
+                        console.error("JSON Parse Error:", e);
+                    }
                     Swal.fire({
-                        icon: 'error',
-                        title: 'ข้อผิดพลาดในการส่งข้อมูล',
-                        text: 'ไม่สามารถส่งข้อมูลได้ กรุณาลองใหม่อีกครั้ง',
+                        icon: icon,
+                        title: 'ข้อผิดพลาด',
+                        text: errorMessage,
                         confirmButtonText: 'OK'
                     });
                 }
