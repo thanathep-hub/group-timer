@@ -3,8 +3,10 @@
 @section('content')
 
     <style>
-        .card-body {
-            min-height: 70vh;
+        .card {
+            background-color: #eff6ff1a;
+            backdrop-filter: blur(10px);
+            box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
         }
 
         .h5 {
@@ -86,12 +88,24 @@
                 padding-right: 0;
             }
         }
+
+        .img-fluid {
+            max-height: 200px;
+        }
+
+        ul {
+            list-style-type: none;
+        }
+
+        .border-group-list {
+            border-bottom: 2px solid #ffffff1c !important
+        }
     </style>
     <div class="container">
         <div class="game-menu">
             <div class="title">
                 <h2 style="color: #52555d;">
-                    <strong>เซ็ตเวลา</strong>
+                    <strong>เซ็ตเวลา 📅</strong>
                     {{-- <img src="https://forum.playragnarokonlinebr.com/uploads/emoticons/f4.gif" height="100"> --}}
                 </h2>
             </div>
@@ -102,34 +116,69 @@
                         <div class="card border-0">
                             <div class="card-body my-3">
                                 <div class="d-flex justify-content-center mb-3">
-                                    <h5>⚠️ หากไม่มีกลุ่ม กรูณาสร้างกลุ่มก่อน</h5>
+                                    <h5>⚠️ หากไม่มีกลุ่ม กรุณาสร้างกลุ่มก่อน</h5>
                                 </div>
                                 <div class="add-group d-flex mb-3">
                                     <a href="/show-group">
                                         <button type="button" class="btn-add-group p-2">➕
                                             สร้างกลุ่ม</button>
                                     </a>
-
                                 </div>
 
-                                <div class="d-flex justify-content-center">
-                                    <div class="mb-3">
-                                        <label>เลือกกลุ่ม : </label>
-                                        <select class="form-select d-inline" aria-label="Default select example">
-                                            <option selected>กรุณาเลือกกลุ่มผู้ใช้งาน</option>
-                                            <option value="1">One</option>
-                                        </select>
-                                        <button type="button" class="btn btn-choose ms-2">เลือก</button>
+                                <div class="row">
+                                    <div class="col-12 col-lg-6">
+                                        <div class="card mb-3">
+                                            <div class="row g-0">
+                                                <div class="col-md-4">
+                                                    <img src="https://static.wikia.nocookie.net/ragnarok_gamepedia_en/images/3/30/RO_DarkLord%28SD%29.png"
+                                                        class="img-fluid p-4 justify-content-center" alt="...">
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <div class="card-body">
+                                                        <h5 class="card-title">AEK0001</h5>
+                                                        <div class="border-bottom border-group-list mb-1"></div>
+                                                        <ul class="p-0">
+                                                            <li><strong>จำนวนสมาชิก : </strong>12 คน</li>
+                                                            <li><strong>จำนวนบอส : </strong>3 คน</li>
+                                                            <li class="mt-2"><strong>🗿เจ้าของกลุ่ม : </strong>aek001213
+                                                            </li>
+                                                        </ul>
+                                                        <a href="#" class="btn btn-primary">🏁 เข้าร่วมกลุ่ม</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-
+                                    <div class="col-12 col-lg-6">
+                                        <div class="card mb-3" style="max-width: 540px;">
+                                            <div class="row g-0">
+                                                <div class="col-md-4">
+                                                    <img src="https://static.wikia.nocookie.net/ragnarok_gamepedia_en/images/3/30/RO_DarkLord%28SD%29.png"
+                                                        class="img-fluid p-4 justify-content-center" alt="...">
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <div class="card-body">
+                                                        <h5 class="card-title">AEK0001</h5>
+                                                        <div class="border-bottom border-group-list mb-1"></div>
+                                                        <ul class="p-0">
+                                                            <li><strong>จำนวนสมาชิก : </strong>12 คน</li>
+                                                            <li><strong>จำนวนบอส : </strong>3 คน</li>
+                                                            <li class="mt-2"><strong>🗿เจ้าของกลุ่ม : </strong>aek001213
+                                                            </li>
+                                                        </ul>
+                                                        <a href="#" class="btn btn-primary">เข้าร่วมกลุ่ม</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
+
+
                             </div>
                         </div>
-
                     </div>
+
                 </div>
             </div>
-
-        </div>
-    </div>
-@endsection
+        @endsection

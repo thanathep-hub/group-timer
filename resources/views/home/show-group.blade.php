@@ -23,8 +23,8 @@
         }
 
         .card {
-            background-color: #ececee40;
-            backdrop-filter: blur(4px);
+            background-color: #eff6ff1a;
+            backdrop-filter: blur(10px);
             box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
         }
 
