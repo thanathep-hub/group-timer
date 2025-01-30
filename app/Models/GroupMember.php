@@ -9,10 +9,10 @@ class GroupMember extends Model
 {
     use HasFactory;
 
-    protected $table = 'GroupTimer.group_member_id';
+    protected $table = 'GroupTimer.group_members';
 
     protected $fillable = [
-        'group_id ',
+        'group_id',
         'member_id',
         'join_date',
         'status',

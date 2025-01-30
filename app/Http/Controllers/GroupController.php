@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Package;
 use Illuminate\Support\Facades\Log;
 use App\Models\Group;
+use App\Models\GroupMember;
 use App\Models\Member;
 use Illuminate\Support\Facades\DB;
 
@@ -80,6 +81,13 @@ class GroupController extends Controller
 
             // Deduct coins
             $member->update(['coin_balance' => $member->coin_balance - $package->coin]);
+
+            GroupMember::create([
+                'group_id' => $group->group_id,
+                'member_id' => $this->member->member_id,
+                'join_date' => now(),
+                'status' => 'active'
+            ]);
 
             DB::commit();
 

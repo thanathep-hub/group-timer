@@ -34,7 +34,7 @@
 
         .button-55 {
             align-self: center;
-            background-color: transparent;
+            background-color: #ffffff;
             background-image: none;
             background-position: 0 90%;
             background-repeat: repeat no-repeat;

@@ -21,7 +21,13 @@ Route::get('/api/boss', [HomeController::class, 'apiBoss']);
 
 Route::middleware(['isMember'])->group(function () {
 
-    Route::get('/set-time', [SetTimeController::class, 'setTime']);
+    Route::get('/join-group', [SetTimeController::class, 'joinGroup'])->name('join.group');
+    Route::get('/join-group/{id}', [SetTimeController::class, 'groupBoss'])->name('group.boss');
     Route::get('/show-group', [GroupController::class, 'showGroup']);
     Route::post('/create-group', [GroupController::class, 'createGroup'])->name('create-group');
+
+    Route::get('/set-time', [SetTimeController::class, 'setTime'])->name('set.time');
 });
+
+
+Route::get('/test', [SetTimeController::class, 'fetchGroup']);

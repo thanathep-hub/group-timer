@@ -31,7 +31,7 @@
                     <a class="nav-link" href="/show-group">👨‍👩‍👧‍👦 กลุ่ม</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/set-time">⏱️ เซ็ตเวลา</a>
+                    <a class="nav-link" href="{{ route('join.group') }}">⏱️ เซ็ตเวลา</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">⚔️ จัดการบอส</a>
