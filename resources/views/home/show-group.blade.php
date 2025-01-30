@@ -125,10 +125,14 @@
     </style>
     <div class="container">
         <div class="group-menu">
-            <div class="title">
-                <h2 style="color: #52555d;">
+            <div class="title d-flex justify-content-between">
+                <h4 style="color: #52555d;">
                     <strong><i class="fa-solid fa-users-line pe-2"></i> สร้างกลุ่ม</strong>
-                </h2>
+                </h4>
+                <div class="d-flex">
+                    <h6><strong>แต้มของคุณ</strong> {{ session('member') ? session('member')->coin_balance : 0 }} 🪙</h6>
+                </div>
+
             </div>
             <div class="mb-3"></div>
             <div class="group-list mb-3">

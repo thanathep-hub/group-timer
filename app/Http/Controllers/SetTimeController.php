@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BossDeathLog;
+use App\Models\Bosses;
 use App\Models\Group;
 use App\Models\GroupMember;
 use Illuminate\Http\Request;
@@ -48,6 +50,38 @@ class SetTimeController extends Controller
 
     public function groupBoss($id)
     {
-        dd('group id : ' . $id);
+        $group_id = $id;
+
+        $check_group = GroupMember::where('group_id', $group_id)
+            ->where('member_id', session('member')->member_id)
+            ->first();
+
+        if (!$check_group) {
+            return response()->json([
+                'status' => 'warning',
+                'message' => 'คุณไม่ได้อยู่ในกลุ่มนี้'
+            ], 400);
+        }
+
+        $boss_in_group = DB::table('VAM_Aek.GroupTimer.boss_death_logs as log')
+            ->leftJoin('VAM_Aek.GroupTimer.bosses as bs', 'log.boss_id', '=', 'bs.boss_id')
+            ->select(
+                'log.log_id',
+                'log.boss_id',
+                'bs.boss_name',
+                'bs.boss_image_url',
+                'log.death_time',
+                'bs.respawn_time',
+                'bs.respawn_variance',
+                'log.killed_by',
+                'log.next_spawn_time'
+            )
+            ->where('log.group_id', $group_id)
+            ->orderBy('log.created_at', 'asc')
+            ->get();
+
+        $boss_all = Bosses::all();
+
+        return view('boss.select-boss', compact('boss_in_group', 'boss_all'));
     }
 }
