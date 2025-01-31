@@ -82,6 +82,6 @@ class SetTimeController extends Controller
 
         $boss_all = Bosses::all();
 
-        return view('boss.select-boss', compact('boss_in_group', 'boss_all'));
+        return view('boss.select-boss', compact('group_id', 'boss_in_group', 'boss_all'));
     }
 }

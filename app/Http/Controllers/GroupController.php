@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BossDeathLog;
 use Illuminate\Http\Request;
 use App\Models\Package;
 use Illuminate\Support\Facades\Log;
@@ -126,6 +127,38 @@ class GroupController extends Controller
             return $package;
         } catch (\Throwable $th) {
             Log::error($th);
+        }
+    }
+
+    public function selectBoss(Request $request)
+    {
+        DB::beginTransaction();
+        try {
+            BossDeathLog::firstOrCreate(
+                [
+                    'boss_id' => $request->boss_id,
+                    'group_id' => 5,
+                ],
+                [
+                    'killed_by' => session('member')->member_id,
+                ]
+            );
+
+            DB::commit();
+
+            return response()->json([
+                'status' => true,
+                'boss_id' => $request->boss_id,
+                'message' => 'Boss selected successfully!'
+            ], 200);
+        } catch (\Throwable $th) {
+            DB::rollBack();
+
+            return response()->json([
+                'status' => false,
+                'boss_id' => $request->boss_id,
+                'message' => 'Boss selection failed!'
+            ], 422);  // Using 422 Unprocessable Entity for validation/business logic errors
         }
     }
 }
