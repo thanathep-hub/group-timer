@@ -137,9 +137,10 @@ class GroupController extends Controller
             BossDeathLog::firstOrCreate(
                 [
                     'boss_id' => $request->boss_id,
-                    'group_id' => 5,
+                    'group_id' => $request->group_id,
                 ],
                 [
+                    'boss_id' => $request->boss_id,
                     'killed_by' => session('member')->member_id,
                 ]
             );

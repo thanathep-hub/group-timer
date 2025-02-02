@@ -27,7 +27,7 @@ Route::middleware(['isMember'])->group(function () {
 
     Route::get('/show-group', [GroupController::class, 'showGroup']);
     Route::post('/create-group', [GroupController::class, 'createGroup'])->name('create-group');
-    Route::post('/group/boss/select', [GroupController::class, 'selectBoss'])->name('boss.select');
+    Route::post('/group/boss/select', [GroupController::class, 'selectBoss'])->name('boss.selected');
 
 
 

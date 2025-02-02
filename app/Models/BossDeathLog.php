@@ -12,7 +12,7 @@ class BossDeathLog extends Model
     protected $table = 'GroupTimer.boss_death_logs';
 
     protected $fillable = [
-        'boss_id ',
+        'boss_id',
         'group_id',
         'death_time',
         'next_spawn_time',

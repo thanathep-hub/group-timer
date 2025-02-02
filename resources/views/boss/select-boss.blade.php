@@ -63,32 +63,20 @@
                     <div class="col-12">
                         <div class="card border-0">
                             <div class="card-body my-3">
-                                <div class="row">
-
-                                    <ul>
-                                        @if ($boss_all)
-                                            @foreach ($boss_all as $item)
-                                                <li>
-                                                    {{ $item->boss_name ? $item->boss_name : '' }}
-                                                </li>
-                                            @endforeach
-
-                                        @endif
-
-                                    </ul>
+                                {{--  --}}
+                                <div class="row" id="boss-select">
                                 </div>
-
                                 <div class="border-bottom mb-3"></div>
-                                <div class="row">
+                                <div class="row" id="boss-unselect">
 
-                                    @if ($boss_all)
+                                    {{-- @if ($boss_all)
                                         @foreach ($boss_all as $item)
-                                            <div class="col-12 col-lg-3 mb-3" id="boss{{ $item->boss_id }}">
+                                            <div class="col-12 col-md-6 col-lg-3 mb-3" id="boss{{ $item->boss_id }}">
                                                 <div class="card card-boss p-4 border-0">
                                                     <div class="boss-detail">
-                                                        <h5><span
-                                                                class="badge">{{ $item->boss_name ? $item->boss_name : '' }}</span>
-                                                        </h5>
+                                                        <h6>
+                                                            {{ $item->boss_name ? $item->boss_name : '' }}
+                                                        </h6>
                                                         <div style="">
                                                             <img class="boss-img mb-3"
                                                                 src="{{ $item->boss_image_url ? $item->boss_image_url : '' }}"
@@ -104,7 +92,7 @@
                                             </div>
                                         @endforeach
 
-                                    @endif
+                                    @endif --}}
 
                                 </div>
                             </div>
@@ -120,57 +108,106 @@
 @push('scripts')
     <script>
         let boss_select = [];
-        let boss_all = [];
+        let boss_unselect = [];
+        let group_id = {{ $group_id ?? null }};
 
-        $(document).ready(function() {
-            fetchAllBoss()
-            fetchBossSelect()
+        $(document).ready(async function() {
+            await fetchBossUnselect();
+            await fetchBossSelect();
+            setBoss(); // ทำงานหลังจากดึงข้อมูลเสร็จ
         });
 
-        function fetchAllBoss() {
-            const game_id = {{ $game_id ?? 1 }};
-            $.ajax({
-                url: "{{ route('fetch.boss') }}?game_id=" + game_id,
-                method: "GET",
-                success: function(response) {
-                    if (response.status === true) {
-                        boss_all = response.data;
+        function fetchBossUnselect() {
+            console.log("fetch boss unselect");
+            return new Promise((resolve, reject) => {
+                $.ajax({
+                    url: "{{ route('fetch.boss') }}?game_id=" + group_id,
+                    method: "GET",
+                    success: function(response) {
+                        boss_unselect = response.data;
+                        console.log(response);
+
+                        resolve();
+                    },
+                    error: function(xhr) {
+                        console.error("Error fetching boss:", xhr);
+                        reject(xhr);
                     }
-                },
-                error: function(xhr) {
-                    console.error("Error fetching boss:", xhr);
-                }
+                });
             });
         }
 
         function fetchBossSelect() {
-            const group_id = {{ $group_id ?? null }};
-            $.ajax({
-                url: "{{ route('boss.select') }}?group_id=" + group_id,
-                method: "GET",
-                success: function(response) {
-                    if (response.status === true) {
+            console.log("fetch boss select");
+            return new Promise((resolve, reject) => {
+                $.ajax({
+                    url: "{{ route('boss.select') }}?group_id=" + group_id,
+                    method: "GET",
+                    success: function(response) {
                         boss_select = response.data;
-                        console.log(boss_select);
-
+                        resolve();
+                    },
+                    error: function(xhr) {
+                        console.error("Error fetching boss select:", xhr);
+                        reject(xhr);
                     }
-                },
-                error: function(xhr) {
-                    console.error("Error fetching boss select :", xhr);
-                }
+                });
             });
         }
 
         function setBoss() {
-            //
+            let set_all = "";
+            let set_boss = "";
+
+            boss_unselect.forEach(element => {
+                set_all += `
+            <div class="col-12 col-md-6 col-lg-3 mb-3" id="boss_${element.boss_id}">
+                <div class="card card-boss p-4 border-0">
+                    <div class="boss-detail">
+                        <h6>${element.boss_name}</h6>
+                        <div>
+                            <img class="boss-img mb-3" src="${element.boss_image_url}">
+                        </div>
+                        <div>
+                            <button class="btn btn-select-boss"
+                                onclick="chooseBoss(${element.boss_id})"
+                                type="button">เลือกบอส</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+            });
+
+            boss_select.forEach(element => {
+                set_boss += `
+                    <div class="col-12 col-md-6 col-lg-3 mb-3" id="boss_${element.boss_id}">
+                        <div class="card card-boss p-4 border-0">
+                            <div class="boss-detail">
+                                <h6>${element.boss_name}</h6>
+                                <div>
+                                    <img class="boss-img mb-3" src="${element.boss_image_url}">
+                                </div>
+                                <div>
+                                    <button class="btn btn-select-boss"
+                                        onclick="chooseBoss(${element.boss_id})"
+                                        type="button">เลือกบอส</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            $('#boss-unselect').html(set_all); // ใช้ .html() แทน .append() เพื่อเคลียร์ข้อมูลเก่าก่อน
+            $('#boss-select').html(set_boss);
         }
 
         function chooseBoss(id) {
-            const group_id = {{ $group_id }};
             const boss_id = id;
 
             $.ajax({
-                url: "{{ route('boss.select') }}",
+                url: "{{ route('boss.selected') }}",
                 method: "POST",
                 data: {
                     group_id: group_id,
@@ -178,9 +215,11 @@
                     _token: "{{ csrf_token() }}"
                 },
                 success: function(response) {
-                    console.log(response);
+                    if (response.status === true) {
 
-                    // fetchCountdownTime(); // อัปเดตเวลาสิ้นสุดใหม่
+                    } else {
+                        console.log(response);
+                    }
                 },
                 error: function(xhr) {
                     console.error("Error starting countdown:", xhr);

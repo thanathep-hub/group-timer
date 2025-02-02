@@ -263,7 +263,7 @@
             var package_id = $('#package_id').val();
             var group_name = $('#group_name').val();
 
-            console.log(package_id, group_name); // ตรวจสอบค่า package_id และ group_name
+            console.log(package_id, group_name);
 
             $.ajax({
                 type: "POST",
@@ -294,7 +294,6 @@
                     }
                 },
                 error: function(xhr, status, error) {
-                    // console.error("Error:", xhr.responseText);
 
                     let errorMessage = "เกิดข้อผิดพลาดในการส่งข้อมูล";
                     let icon = 'error';
